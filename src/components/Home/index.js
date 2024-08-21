@@ -187,6 +187,7 @@ export default function Home() {
   useEffect(() => {
     if (width && width < 1024) {
       setIsCardLoading(false);
+      setShowModal(true);
     }
   }, [width]);
 

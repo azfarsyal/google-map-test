@@ -18,7 +18,7 @@ import NotFound from '@/assets/icons/NotFound';
 const ListCard = ({ isLoading, data, onCardClick }) => {
   return (
     <>
-      <div className='xs:grid-cols-1 xs:place-items-center grid gap-x-[10px] gap-y-8 md:grid-cols-3 xmd:grid-cols-2'>
+      <div className='grid gap-x-[10px] gap-y-8 md:grid-cols-3 xs:grid-cols-1 xs:place-items-center xmd:grid-cols-2'>
         {isLoading && !data.items?.length
           ? Array.from({ length: 6 }).map((_, index) => (
               <div
@@ -39,6 +39,9 @@ const ListCard = ({ isLoading, data, onCardClick }) => {
         <div className='flex h-full flex-col items-center justify-center gap-2'>
           <NotFound />
           <p className='font-bold'>No Location Found</p>
+          <p className='text-center text-xl text-[#77787c]'>
+            Navigate in map to locate
+          </p>
         </div>
       )}
     </>

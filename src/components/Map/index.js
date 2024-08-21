@@ -169,7 +169,7 @@ const Map = ({
       className={`relative col-span-12 h-full w-full sm:col-span-4 lg:col-span-4 lg:h-[550px] xl:h-[750px] ${!showMap ? 'max-w-[436px] xlg:hidden' : ''}`}
     >
       <div
-        className={`shadow-[0px 4.75px 12.67px 0px #00000029] fixed top-3 w-full overflow-hidden rounded-[32px] border border-solid border-[#E0E0E1] shadow-xl lg:h-[550px] xl:h-[750px] ${!showMap ? 'xllg:max-w-[400px] xmlg:max-w-[370px] xslg:max-w-[350px] max-w-[436px] xlg:hidden' : ''}`}
+        className={`shadow-[0px 4.75px 12.67px 0px #00000029] fixed top-3 w-full overflow-hidden rounded-[32px] border border-solid border-[#E0E0E1] shadow-xl lg:h-[550px] xl:h-[750px] ${!showMap ? 'max-w-[436px] xlg:hidden xllg:max-w-[400px] xmlg:max-w-[370px] xslg:max-w-[350px]' : ''}`}
       >
         <GoogleMapApiLoader apiKey={process.env.NEXT_PUBLIC_GOOGLE_API}>
           <GoogleMap
