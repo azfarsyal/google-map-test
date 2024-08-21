@@ -145,10 +145,7 @@ export default function Home() {
 
   useEffect(() => {
     if (
-      (inView &&
-        !isFirstRef.current &&
-        // scrolled &&
-        cardData.items.length < 18) ||
+      (inView && !isFirstRef.current && cardData.items.length < 18) ||
       page !== previousPage
     ) {
       scrollToTop();
@@ -165,7 +162,6 @@ export default function Home() {
         router
       );
       setPreviousPage(page);
-      // setIsScrolled(false);
     }
 
     isFirstRef.current = false;
@@ -194,18 +190,19 @@ export default function Home() {
   // Calculating the dynamic height based on the data length
   const height = calculateHeight(cardData?.items.length);
 
-  const shouldShowLoading =
-    !isCardLoading &&
-    cardData?.totalCount > cardData?.items?.length &&
-    rangeOfRecord * 6 !== cardData?.totalCount &&
-    cardData.items.length < 13;
-
   let cardItemsLength = cardData.items.length;
   const itemsPerPage = 18;
 
   if (page > 1) {
     cardItemsLength += (page - 1) * itemsPerPage;
   }
+
+  const shouldShowLoading =
+    !isCardLoading &&
+    cardData?.totalCount > cardData?.items?.length &&
+    rangeOfRecord * 6 !== cardData?.totalCount &&
+    cardData.items.length < 13 &&
+    cardItemsLength !== cardData.totalCount;
 
   const shouldShowPagination =
     cardData.items.length === 18 ||
