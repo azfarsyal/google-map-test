@@ -35,7 +35,9 @@ NEXT_PUBLIC_GOOGLE_API={Google Map API Key}
 
 # How to test?
 
-- The URL where the map and data will be displayed will be provided via email. This URL will allow you to view the data fetched from Sanity and displayed on the map.
+APP is deployed at [https://google-map-test-lake.vercel.app](https://google-map-test-lake.vercel.app):
+
+- The URL, where the map and data will be displayed, will be provided via email. This URL will allow you to view the data fetched from Sanity and displayed on the map.
 
 - Alternatively, you can search within Pakistan on the map, as the data currently resides within Pakistan's coordinates.
 
@@ -43,7 +45,7 @@ NEXT_PUBLIC_GOOGLE_API={Google Map API Key}
 
 To update or add new POIs in Sanity:
 
-1. Access the Sanity Studio via the provided link: [Azfar Google Map Test Sanity Studio](https://google-map-sanity-studio.vercel.app/).
+1. Access the Sanity Studio via the provided link: [Azfar Google Map Test Sanity Studio](https://google-map-sanity-studio.vercel.app).
 2. Ensure you have the required Sanity credentials to log in and make changes.
 3. Once logged in, you can update the existing information or add new POIs, which will then be reflected on the map.
 
