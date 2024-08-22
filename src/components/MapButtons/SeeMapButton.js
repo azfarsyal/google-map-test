@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 /**
- * SeepMapButton component that displays a button to open a modal with the map.
+ * SeeMapButton component that displays a button to open a modal with the map.
  * The button is fixed to the bottom of the screen and is only visible on smaller screens (hidden on large screens).
  *
- * @param {Object} props - The properties passed to the SeepMapButton component.
+ * @param {Object} props - The properties passed to the SeeMapButton component.
  * @param {boolean} props.showModal - The state indicating whether the modal is currently visible.
  * @param {Function} props.openModal - The function to open the modal when the button is clicked.
- * @returns {JSX.Element} The rendered SeepMapButton component.
+ * @returns {JSX.Element} The rendered SeeMapButton component.
  */
 
-const SeepMapButton = ({ showModal, openModal }) => {
+const SeeMapButton = ({ showModal, openModal }) => {
   return (
     <div className='fixed bottom-20 left-0 right-0 flex justify-center lg:hidden'>
       {!showModal && (
@@ -24,9 +24,9 @@ const SeepMapButton = ({ showModal, openModal }) => {
   );
 };
 
-SeepMapButton.propTypes = {
+SeeMapButton.propTypes = {
   showModal: PropTypes.bool.isRequired,
   openModal: PropTypes.func.isRequired,
 };
 
-export default SeepMapButton;
+export default SeeMapButton;

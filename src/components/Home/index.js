@@ -9,7 +9,7 @@ import ListCard from '@/components/ListingCard/ListCard';
 import Modal from '@/components/Modal';
 import { useRouter } from 'next/navigation';
 import SeeListButton from '@/components//MapButtons/SeeListButton';
-import SeepMapButton from '../MapButtons/SeepMapButton';
+import SeeMapButton from '../MapButtons/SeeMapButton';
 import ShowMore from '../ShowMore';
 import { useWindowWidth } from '../utils/WindowWidth';
 
@@ -250,7 +250,7 @@ export default function Home() {
           shouldShowPagination={shouldShowPagination}
         />
       </div>
-      <SeepMapButton showModal={showModal} openModal={openModal} />
+      <SeeMapButton showModal={showModal} openModal={openModal} />
       <Modal isVisible={showModal} onClose={closeModal}>
         {isClient && (
           <Map

@@ -43,7 +43,7 @@ NEXT_PUBLIC_GOOGLE_API={Google Map API Key}
 
 To update or add new POIs in Sanity:
 
-1. Access the Sanity Studio via the provided link: [Azfar Google Mao Test Sanity Studio](https://google-map-sanity-studio.vercel.app/).
+1. Access the Sanity Studio via the provided link: [Azfar Google Map Test Sanity Studio](https://google-map-sanity-studio.vercel.app/).
 2. Ensure you have the required Sanity credentials to log in and make changes.
 3. Once logged in, you can update the existing information or add new POIs, which will then be reflected on the map.
 
