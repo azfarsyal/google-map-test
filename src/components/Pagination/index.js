@@ -61,7 +61,7 @@ const Pagination = ({
   }
 
   return (
-    <div className='flex w-[100vw] justify-center gap-2'>
+    <div className='mb-2 mt-20 flex w-[100vw] justify-center gap-2 xs:pr-20'>
       {totalCount > 18 && (
         <>
           <PaginationControl

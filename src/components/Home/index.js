@@ -211,14 +211,9 @@ export default function Home() {
 
   return (
     <>
-      <div className='container mx-auto grid max-w-screen-2xl grid-cols-12 gap-x-4 p-8'>
+      <div className='container mx-auto grid h-full max-w-screen-2xl grid-cols-12 gap-x-4 p-8'>
         <div
-          className='col-span-12 h-[83dvh] overflow-auto sm:col-span-12 md:col-span-12 lg:col-span-8 lg:h-[550px] xl:h-[750px]'
-          style={
-            !isCardLoading && cardData.items.length
-              ? { height: `${height}px` }
-              : {}
-          }
+          className='col-span-12 h-full overflow-auto sm:col-span-12 md:col-span-12 lg:col-span-8'
           id='card'
         >
           <ListCard
