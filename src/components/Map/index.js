@@ -11,8 +11,8 @@ import { MinusIcon } from '@/assets/icons/Minus';
 import { FullScreenIcon } from '@/assets/icons/FullScreen';
 import { getMapPlacesOnLatLongChange } from '@/services/sanity';
 import { MAP_STYLE, getMapMakerIconByMarkerType } from '@/utils/map';
-import { CloseIcon } from '@/assets/icons/Close';
 import MapDetailsTooltip from './DetailsOverlay';
+import ToolTip from '../ToolTip';
 
 const MAX_ZOOM = 20;
 const MIN_ZOOM = 5;
@@ -40,13 +40,14 @@ const Map = ({
   setCardData,
   fetchTimeoutRef,
   mapRef,
-  isCardLoading,
   setIsCardLoading,
   details,
   setDetails,
   showMap,
   routerPushTimeoutRef,
   router,
+  setDisablePagination,
+  isMobile,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -55,10 +56,6 @@ const Map = ({
    * State to handle Marker size scaling on hover
    */
   const [hoveredItem, setHoveredItem] = useState(null);
-  /**
-   * My current location.
-   */
-  const [myCenter, setMyCenter] = useState(undefined);
 
   /**
    * State that indicates if the component has been mounted and map has been loaded or not?
@@ -66,36 +63,16 @@ const Map = ({
   const [isMapLoaded, setMapLoaded] = useState(false);
 
   /**
-   * A function used to get current location of the user.
-   */
-  const getCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setMyCenter({
-          lat: latitude,
-          lng: longitude,
-        });
-      });
-    }
-  };
-
-  /**
    * Effect to track changes for map loads, if the map has been loaded then check search params for the first time else fetch data on my location.
    */
   useEffect(() => {
-    /**
-     * if we have a link that someone else shared to me that includes the lat, lng and zoom for the center point of map.
-     */
+    let centerLat;
+    let centerLng;
+    let zoom;
     const hasQueryParams = window.location.search.length > 0;
-
-    /**
-     * if map has been loaded and there is no search parameters, then fetch events on my location.
-     */
-    if (isMapLoaded && !hasQueryParams) getCurrentLocation();
-    /**
-     * Else fetch events on the location shared using link from search params.
-     */ else {
+    if (hasQueryParams) {
+      /** fetch events on the location shared using link from search params.
+       */
       /**
        * create a new search param object.
        */
@@ -103,47 +80,56 @@ const Map = ({
       /**
        * get Lat and Lng for current center point
        */
-      const centerLat = parseFloat(urlParams.get('centerLat'));
-      const centerLng = parseFloat(urlParams.get('centerLng'));
+      centerLat = parseFloat(urlParams.get('centerLat'));
+      centerLng = parseFloat(urlParams.get('centerLng'));
       /**
        * get current zoom of the map
        */
-      const zoom = parseFloat(urlParams.get('zoom'));
+      zoom = parseFloat(urlParams.get('zoom'));
+    } else {
       /**
-       * if map ref exists then update the center point and the zoom, so that the map is exactly the same as user shared
+       * set Lat and Lng
        */
-      if (mapRef.current) {
-        mapRef.current.setCenter({ lat: centerLat, lng: centerLng });
-        mapRef.current.setZoom(zoom < MIN_ZOOM ? MIN_ZOOM : zoom);
-      }
+      centerLat = 31.464656329970605;
+      centerLng = 73.2539386;
       /**
-       * get map bounds and fetch the data from santry.
+       * set current zoom of the map
        */
-      const bounds = mapRef.current?.getBounds();
-      if (bounds) {
-        const ne = bounds.getNorthEast(); // North-East corner
-        const sw = bounds.getSouthWest(); // South-West corner
-
-        /**
-         * if the details popup is open then don't queue the api request.
-         *
-         * else queue the API request.
-         */
-        if (!details)
-          fetchTimeoutRef.current = setTimeout(async () => {
-            await getMapPlacesOnLatLongChange(
-              fetchTimeoutRef,
-              mapRef,
-              setData,
-              setCardData,
-              setIsLoading,
-              setIsCardLoading,
-              routerPushTimeoutRef,
-              router
-            );
-          }, 1000);
-      }
+      zoom = 12;
     }
+
+    /**
+     * if map ref exists then update the center point and the zoom, so that the map is exactly the same as user shared
+     */
+    if (mapRef.current) {
+      mapRef.current.setCenter({ lat: centerLat, lng: centerLng });
+      mapRef.current.setZoom(zoom < MIN_ZOOM ? MIN_ZOOM : zoom);
+    }
+    /**
+     * get map bounds and fetch the data from santry.
+     */
+    const bounds = mapRef.current?.getBounds();
+    if (bounds) {
+      /**
+       * if the details popup is open then don't queue the api request.
+       *
+       * else queue the API request.
+       */
+      if (!details)
+        fetchTimeoutRef.current = setTimeout(async () => {
+          await getMapPlacesOnLatLongChange(
+            fetchTimeoutRef,
+            mapRef,
+            setData,
+            setCardData,
+            setIsLoading,
+            setIsCardLoading,
+            routerPushTimeoutRef,
+            router
+          );
+        }, 1000);
+    }
+    // }
   }, [isMapLoaded]);
 
   /**
@@ -166,96 +152,83 @@ const Map = ({
 
   return (
     <div
-      className={`relative col-span-12 h-full w-full sm:col-span-4 lg:col-span-4 lg:h-[550px] xl:h-[750px] ${!showMap ? 'max-w-[436px] xlg:hidden' : ''}`}
+      className={`shadow-[0px 4.75px 12.67px 0px #00000029] w-full overflow-hidden ${isMobile ? 'rounded-t-lg' : 'rounded-[32px]'} border border-solid border-[#E0E0E1] shadow-xl xl:h-[750px] xlg:h-[90svh] xllg:h-[750px] xmlg:h-[750px] xslg:h-[750px] ${!showMap ? 'max-w-[436px] xlg:w-[376px] xllg:max-w-[400px] xmlg:max-w-[370px] xslg:max-w-[350px]' : ''}`}
     >
-      <div
-        className={`shadow-[0px 4.75px 12.67px 0px #00000029] fixed top-3 w-full overflow-hidden rounded-[32px] border border-solid border-[#E0E0E1] shadow-xl lg:h-[550px] xl:h-[750px] ${!showMap ? 'max-w-[436px] xlg:hidden xllg:max-w-[400px] xmlg:max-w-[370px] xslg:max-w-[350px]' : ''}`}
-      >
-        <GoogleMapApiLoader apiKey={process.env.NEXT_PUBLIC_GOOGLE_API}>
-          <GoogleMap
-            onLoad={(map) => {
-              mapRef.current = map;
-              setMapLoaded(true);
-            }}
-            mapOptions={{
+      <GoogleMapApiLoader apiKey={process.env.NEXT_PUBLIC_GOOGLE_API}>
+        <GoogleMap
+          onLoad={(map) => {
+            mapRef.current = map;
+            setMapLoaded(true);
+          }}
+          mapOptions={{
+            /**
+             * CUSTOM MAP STYLES
+             */
+            styles: MAP_STYLE,
+            disableDefaultUI: true,
+            zoomControl: false,
+          }}
+          containerProps={{
+            className:
+              'outline-0 focus:outline-0 ring-0 w-full xlg:h-[90svh] xmlg:h-[750px] xllg:h-[750px] xl:h-[750px] xslg:h-[750px]  border border-grey-500 w-[100vw]',
+          }}
+          onBoundsChanged={() => {
+            getMapPlacesOnLatLongChange(
+              fetchTimeoutRef,
+              mapRef,
+              setData,
+              setCardData,
+              setIsLoading,
+              setIsCardLoading,
+              routerPushTimeoutRef,
+              router,
+              setDisablePagination
+            );
+          }}
+        >
+          <MarkerClusterer>
+            {data?.map(
               /**
-               * CUSTOM MAP STYLES
+               *
+               * @param {import('@/services/sanity').SanityBoundsData} loc - The object from Sanity result of bounds
                */
-              styles: MAP_STYLE,
-              disableDefaultUI: true,
-              zoomControl: false,
-            }}
-            containerProps={{
-              className:
-                'outline-0 focus:outline-0 ring-0 w-full lg:h-[550px] xl:h-[750px] h-[83dvh] border border-grey-500 w-[100vw]',
-            }}
-            center={myCenter}
-            zoom={15}
-            onBoundsChanged={() => {
-              getMapPlacesOnLatLongChange(
-                fetchTimeoutRef,
-                mapRef,
-                setData,
-                setCardData,
-                setIsLoading,
-                setIsCardLoading,
-                routerPushTimeoutRef,
-                router
-              );
-            }}
-          >
-            <MarkerClusterer>
-              {data?.map(
-                /**
-                 *
-                 * @param {import('@/services/sanity').SanityBoundsData} loc - The object from Sanity result of bounds
-                 */
-                (loc) => {
-                  return (
-                    <Marker
-                      onClick={() => handleShowDetails(loc._id)}
-                      key={JSON.stringify(loc.location)}
-                      lat={loc.location.lat}
-                      lng={loc.location.lng}
-                      onMouseOver={() => setHoveredItem(loc._id)}
-                      onMouseOut={() => setHoveredItem(null)}
-                      icon={getMapMakerIconByMarkerType(
-                        loc.markerType,
-                        details?._id === loc._id,
-                        hoveredItem === loc._id
-                      )}
-                    />
-                  );
-                }
-              )}
-              {myCenter && <Marker lat={myCenter.lat} lng={myCenter.lng} />}
-            </MarkerClusterer>
-            {isMapLoaded ? <Map.Controls mapRef={mapRef} /> : null}
-            {isLoading ? <Map.Loading /> : null}
-            {details && (
-              <Map.DetailsOverlay
-                map={mapRef.current}
-                position={
-                  new window.google.maps.LatLng(
-                    details.location.lat,
-                    details.location.lng
-                  )
-                }
-              >
-                <div className='z-[100000] flex w-[200px] items-start justify-between rounded-md bg-black p-2 text-white'>
-                  <h3 className='text-base font-medium'>{details?.title}</h3>
-                  <button
-                    onClick={() => setDetails(null)}
-                    className='z-[100000]'
-                  >
-                    <CloseIcon fill='white' width={25} height={25} />
-                  </button>
-                </div>
-              </Map.DetailsOverlay>
+              (loc) => {
+                return (
+                  <Marker
+                    onClick={() => handleShowDetails(loc._id)}
+                    key={JSON.stringify(loc.location)}
+                    lat={loc.location.lat}
+                    lng={loc.location.lng}
+                    onMouseOver={() => setHoveredItem(loc._id)}
+                    onMouseOut={() => setHoveredItem(null)}
+                    icon={getMapMakerIconByMarkerType(
+                      loc.markerType,
+                      details?._id === loc._id,
+                      hoveredItem === loc._id
+                    )}
+                  />
+                );
+              }
             )}
-          </GoogleMap>
-        </GoogleMapApiLoader>
-      </div>
+            {/* {myCenter && <Marker lat={myCenter.lat} lng={myCenter.lng} />} */}
+          </MarkerClusterer>
+          {isMapLoaded ? <Map.Controls mapRef={mapRef} /> : null}
+          {isLoading ? <Map.Loading /> : null}
+          {details && (
+            <Map.DetailsOverlay
+              map={mapRef.current}
+              position={
+                new window.google.maps.LatLng(
+                  details.location.lat,
+                  details.location.lng
+                )
+              }
+            >
+              <ToolTip details={details} setDetails={setDetails} />
+            </Map.DetailsOverlay>
+          )}
+        </GoogleMap>
+      </GoogleMapApiLoader>
     </div>
   );
 };

@@ -34,13 +34,10 @@ const Modal = ({ isVisible, onClose, children }) => {
   return (
     <div className='fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50'>
       <div className='relative h-[90dvh] w-[100vw] rounded-t-lg bg-white shadow-lg lg:p-4'>
-        <button
-          className='absolute -top-14 right-7 z-10 text-4xl'
-          onClick={onClose}
-        >
+        <button className='absolute right-4 z-10 text-4xl' onClick={onClose}>
           &times;
         </button>
-        <div className='h-full overflow-auto pt-10'>{children}</div>
+        <div className='h-full overflow-auto'>{children}</div>
       </div>
     </div>
   );

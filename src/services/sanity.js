@@ -76,8 +76,8 @@ export async function fetchDataWithinBounds(neLat, neLng, swLat, swLng, index) {
       image,
       markerType
     } | order(_createdAt desc)${recordsToFetch}`;
-
   const params = { neLat, neLng, swLat, swLng };
+
   return {
     items: await client.fetch(paginatedQuery, params),
     totalCount: await client.fetch(totalCountQuery, params),
@@ -132,7 +132,9 @@ async function fetchMapData(
   data,
   setData,
   setIsLoading,
-  index
+  index,
+  isMobile,
+  setDisablePagination
 ) {
   setIsLoading(true);
   try {
@@ -143,7 +145,8 @@ async function fetchMapData(
       swLng,
       index
     );
-    if (data?.items?.length && index % 3 !== 0) {
+    //append on mobile
+    if (data?.items?.length && isMobile) {
       setData((pre) => {
         return {
           items: [...pre.items, ...response.items],
@@ -153,6 +156,7 @@ async function fetchMapData(
     } else if (response.items.length) {
       setData(response);
     }
+    setDisablePagination(false);
   } catch (e) {
     console.log(e);
   } finally {
@@ -165,7 +169,6 @@ async function fetchMapData(
  *
  * @param {React.RefObject<any>} fetchTimeoutRef - A ref object to store the timeout ID for debouncing.
  * @param {React.RefObject<any>} mapRef - A ref object to access the map instance.
- * @param {any} details - Additional details to control fetching behavior.
  * @param {Object} data - The current state data.
  * @param {Function} setData - Function to update the state data.
  * @param {Function} setIsLoading - Function to update the loading state.
@@ -177,64 +180,91 @@ async function fetchMapData(
 export async function getLatLongOnChange(
   fetchTimeoutRef,
   mapRef,
-  details,
   data,
   setData,
   setIsLoading,
   index,
   routerPushTimeoutRef,
-  router
+  router,
+  isMobile,
+  setDisablePagination
 ) {
-  /**
-   * Clears the debounce timeout.
-   */
+  let bounds;
+
   if (fetchTimeoutRef.current) {
     clearTimeout(fetchTimeoutRef.current);
     fetchTimeoutRef.current = null;
   }
-  const bounds = mapRef.current?.getBounds();
-  if (bounds) {
-    const ne = bounds.getNorthEast(); // North-East corner
-    const sw = bounds.getSouthWest(); // South-West corner
 
-    fetchTimeoutRef.current = setTimeout(async () => {
-      await fetchMapData(
+  if (mapRef.current) {
+    bounds = mapRef.current?.getBounds();
+    processBounds(
+      bounds,
+      data,
+      setData,
+      setIsLoading,
+      index,
+      isMobile,
+      setDisablePagination,
+      mapRef
+    ); // Move the existing bounds processing code to this function
+  } else {
+    bounds = returnQueryParams();
+    processBounds(
+      bounds,
+      data,
+      setData,
+      setIsLoading,
+      index,
+      isMobile,
+      setDisablePagination
+    ); // Move the existing bounds processing code to this function
+  }
+
+  function processBounds(
+    bounds,
+    data,
+    setData,
+    setIsLoading,
+    index,
+    isMobile,
+    setDisablePagination,
+    mapRef
+  ) {
+    if (bounds) {
+      const ne = bounds.getNorthEast(); // North-East corner
+      const sw = bounds.getSouthWest(); // South-West corner
+      fetchTimeoutRef.current = setTimeout(async () => {
+        await fetchMapData(
+          ne.lat(),
+          ne.lng(),
+          sw.lat(),
+          sw.lng(),
+          data,
+          setData,
+          setIsLoading,
+          index,
+          isMobile,
+          setDisablePagination
+        );
+      }, 1000);
+
+      if (routerPushTimeoutRef.current) {
+        clearTimeout(routerPushTimeoutRef.current);
+      }
+      setQueryParams(
+        routerPushTimeoutRef,
+        router,
+        mapRef,
         ne.lat(),
         ne.lng(),
         sw.lat(),
         sw.lng(),
-        data,
-        setData,
-        setIsLoading,
-        index
+        bounds?.center?.lat,
+        bounds?.center?.lng,
+        bounds?.zoom
       );
-    }, 1000);
-
-    /**
-     * If the router state debounce on map bounds change already exists then requeue it.
-     */
-    if (routerPushTimeoutRef.current) {
-      clearTimeout(routerPushTimeoutRef.current);
     }
-    routerPushTimeoutRef.current = setTimeout(() => {
-      /**
-       * Create search params from current origin link and take out the query params from the URL.
-       */
-      const locationUrl = new URL(window.location.origin);
-      locationUrl.searchParams.append(
-        'centerLat',
-        mapRef.current.getCenter().lat()
-      );
-      locationUrl.searchParams.append(
-        'centerLng',
-        mapRef.current.getCenter().lng()
-      );
-      locationUrl.searchParams.append('zoom', mapRef.current.getZoom());
-      /**
-       * Replace the current state of the URL with new search params.
-       */
-      router.replace(location.pathname + locationUrl.search);
-    }, 500);
   }
 }
 
@@ -258,7 +288,8 @@ export async function getMapPlacesOnLatLongChange(
   setIsLoading,
   setIsCardLoading,
   routerPushTimeoutRef,
-  router
+  router,
+  setDisablePagination
 ) {
   /**
    * clear the debounce timeout
@@ -267,11 +298,12 @@ export async function getMapPlacesOnLatLongChange(
     clearTimeout(fetchTimeoutRef.current);
     fetchTimeoutRef.current = null;
   }
+
   const bounds = mapRef.current?.getBounds();
+
   if (bounds) {
     const ne = bounds.getNorthEast(); // North-East corner
     const sw = bounds.getSouthWest(); // South-West corner
-
     /**
      * if details popup is not open then queue the data fetch
      */
@@ -287,6 +319,7 @@ export async function getMapPlacesOnLatLongChange(
       await fetchDataWithinBounds(ne.lat(), ne.lng(), sw.lat(), sw.lng(), 0)
         .then((res) => {
           setCardData(res);
+          setDisablePagination(false);
         })
         .finally(() => {
           setIsCardLoading(false);
@@ -299,24 +332,78 @@ export async function getMapPlacesOnLatLongChange(
     if (routerPushTimeoutRef.current) {
       clearTimeout(routerPushTimeoutRef.current);
     }
-    routerPushTimeoutRef.current = setTimeout(() => {
-      /**
-       * Create search params from current origin link and take out the query params from the url.
-       */
-      const locationUrl = new URL(window.location.origin);
-      locationUrl.searchParams.append(
-        'centerLat',
-        mapRef.current.getCenter().lat()
-      );
-      locationUrl.searchParams.append(
-        'centerLng',
-        mapRef.current.getCenter().lng()
-      );
-      locationUrl.searchParams.append('zoom', mapRef.current.getZoom());
-      /**
-       * replace the current state of the url => new search params.
-       */
-      router.replace(location.pathname + locationUrl.search);
-    }, 500);
+    setQueryParams(
+      routerPushTimeoutRef,
+      router,
+      mapRef,
+      ne.lat(),
+      ne.lng(),
+      sw.lat(),
+      sw.lng()
+    );
   }
+}
+
+function returnQueryParams() {
+  // Get the query string from the URL
+  const queryString = window.location.search;
+
+  // Parse the query string into a URLSearchParams object
+  const urlParams = new URLSearchParams(queryString);
+
+  // Return an object that mimics the bounds structure
+  return {
+    getNorthEast: () => ({
+      lat: () => parseFloat(urlParams.get('neLat') ?? 31.574114902764265),
+      lng: () => parseFloat(urlParams.get('neLng') ?? 73.32809631484375),
+    }),
+    getSouthWest: () => ({
+      lat: () => parseFloat(urlParams.get('swLat') ?? 31.355069641403432),
+      lng: () => parseFloat(urlParams.get('swLng') ?? 73.17978088515625),
+    }),
+    center: {
+      lat: parseFloat(urlParams.get('centerLat') ?? 31.464656329970605),
+      lng: parseFloat(urlParams.get('centerLng') ?? 73.2539386),
+    },
+    zoom: parseInt(urlParams.get('zoom') ?? 12),
+  };
+}
+
+function setQueryParams(
+  routerPushTimeoutRef,
+  router,
+  mapRef,
+  neLat,
+  neLng,
+  swLat,
+  swLng,
+  centerLat,
+  centerLng,
+  zoom
+) {
+  routerPushTimeoutRef.current = setTimeout(() => {
+    /**
+     * Create search params from current origin link and take out the query params from the url.
+     */
+    const locationUrl = new URL(window.location.origin);
+    locationUrl.searchParams.append(
+      'centerLat',
+      mapRef?.current?.getCenter().lat() ?? centerLat
+    );
+    locationUrl.searchParams.append(
+      'centerLng',
+      mapRef?.current?.getCenter().lng() ?? centerLng
+    );
+    locationUrl.searchParams.append('neLat', neLat);
+    locationUrl.searchParams.append('neLng', neLng);
+    locationUrl.searchParams.append('swLat', swLat);
+    locationUrl.searchParams.append('swLng', swLng);
+
+    locationUrl.searchParams.append('zoom', mapRef?.current.getZoom() ?? zoom);
+
+    /**
+     * replace the current state of the url => new search params.
+     */
+    router.replace(location.pathname + locationUrl.search);
+  }, 500);
 }

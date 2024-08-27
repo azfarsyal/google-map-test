@@ -1,4 +1,7 @@
 import PropTypes from 'prop-types';
+import { CiMap } from 'react-icons/ci';
+import { FaArrowDown } from 'react-icons/fa6';
+
 /**
  * SeeMapButton component that displays a button to open a modal with the map.
  * The button is fixed to the bottom of the screen and is only visible on smaller screens (hidden on large screens).
@@ -9,16 +12,36 @@ import PropTypes from 'prop-types';
  * @returns {JSX.Element} The rendered SeeMapButton component.
  */
 
-const SeeMapButton = ({ showModal, openModal }) => {
+const SeeMapButton = ({
+  showModal,
+  openModal,
+  totalCount,
+  itemCount,
+  disablePagination,
+  loadMore,
+}) => {
   return (
-    <div className='fixed bottom-20 left-0 right-0 flex justify-center lg:hidden'>
+    <div className='left-0 right-0 flex justify-center bg-white md:hidden'>
       {!showModal && (
-        <button
-          className='ml-5 rounded-lg border border-black bg-black px-6 py-4 text-white'
-          onClick={openModal}
-        >
-          See Map
-        </button>
+        <div className='flex gap-[10px]'>
+          <button
+            className='mb-10 mt-5 flex items-center justify-center gap-3 rounded-lg border border-black bg-black px-6 py-4 text-white'
+            onClick={openModal}
+          >
+            See Map
+            <CiMap size={20} />
+          </button>
+          {totalCount > 6 && itemCount !== totalCount && (
+            <button
+              className='mb-10 mt-5 flex items-center justify-center gap-3 rounded-lg border border-black px-6 py-4 disabled:opacity-50'
+              onClick={loadMore}
+              disabled={disablePagination}
+            >
+              Load more
+              <FaArrowDown size={20} />
+            </button>
+          )}
+        </div>
       )}
     </div>
   );
