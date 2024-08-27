@@ -31,15 +31,9 @@ NEXT_PUBLIC_GOOGLE_API={Google Map API Key}
 
 - **Dynamic Data Display:** As you navigate and zoom on the map, the list of POIs updates dynamically to reflect the data relevant to the current map view.
 
-- **Card Listing with Pagination:** The POIs are displayed in a card format. Each page supports infinite scroll, showing up to 18 cards in total. Initially, 6 cards are shown, and additional cards are loaded as you scroll. After 18 cards or all cards being rendered, pagination options are provided for easy navigation.
-
 # How to test?
 
-APP is deployed at [https://google-map-test-lake.vercel.app](https://google-map-test-lake.vercel.app):
-
-- The URL, where the map and data will be displayed, will be provided via email. This URL will allow you to view the data fetched from Sanity and displayed on the map.
-
-- Alternatively, you can search within Pakistan on the map, as the data currently resides within Pakistan's coordinates.
+APP is deployed at [https://google-map-test-lake.vercel.app](https://google-map-test-lake.vercel.app)
 
 # How to modify sanity data?
 
