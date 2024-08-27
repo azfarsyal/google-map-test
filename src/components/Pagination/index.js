@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ChevronLeftIcon from '@/assets/icons/ArrowHeadLeft';
 import ChevronRightIcon from '@/assets/icons/ArrowHeadRight';
+import { useWindowWidth } from '@/utils/WindowWidth';
 
 /**
  * Pagination component for navigating through pages.
@@ -16,19 +17,20 @@ import ChevronRightIcon from '@/assets/icons/ArrowHeadRight';
  * @param {function} props.setPreviousPage - Function to set the previous page.
  */
 const Pagination = ({
-  dataCount,
   totalCount,
   page,
   setPage,
   previousPage,
   setPreviousPage,
-  shouldShowPagination,
+  disablePagination,
 }) => {
+  const width = useWindowWidth();
+  const isTablet = width <= 1023;
   // State to manage the disabled state of navigation buttons based on the current page
   // `left` is disabled if on the first page, `right` is disabled if on the last page
   const [disableButton, setDisableButton] = useState({
     left: page === 1,
-    right: page === Math.ceil(totalCount / 18),
+    right: page === Math.ceil(totalCount / 6),
   });
 
   /**
@@ -41,13 +43,13 @@ const Pagination = ({
     const valToUse = action === 'arrow' ? page + val : val;
 
     // Update the disabled state of navigation buttons based on the current page after navigation
-    if (valToUse === Math.ceil(totalCount / 18)) {
+    if (valToUse === Math.ceil(totalCount / 6)) {
       setDisableButton({ ...disableButton, right: true, left: false });
     } else if (valToUse === 1) {
       setDisableButton({ ...disableButton, left: true, right: false });
     } else if (valToUse > 1) {
       setDisableButton({ ...disableButton, left: false, right: false });
-    } else if (valToUse < Math.ceil(totalCount / 18)) {
+    } else if (valToUse < Math.ceil(totalCount / 6)) {
       setDisableButton({ ...disableButton, right: false });
     }
 
@@ -56,34 +58,31 @@ const Pagination = ({
     setPreviousPage(action === 'arrow' ? previousPage + val - 1 : val - 1);
   };
 
-  if (!shouldShowPagination) {
-    return;
-  }
-
   return (
-    <div className='mb-2 mt-20 flex w-[100vw] justify-center gap-2 xs:pr-20'>
-      {totalCount > 18 && (
-        <>
-          <PaginationControl
-            direction='left'
-            onClick={() => handleNavigation('arrow', -1)}
-            disableButton={disableButton.left}
-          />
-          {renderPageItems(
-            totalCount,
-            page,
-            setPage,
-            setPreviousPage,
-            handleNavigation
-          )}
-          <PaginationControl
-            direction='right'
-            onClick={() => handleNavigation('arrow', 1)}
-            disableButton={disableButton.right}
-          />
-        </>
-      )}
-    </div>
+    totalCount > 6 && (
+      <div
+        className={`mb-2 flex justify-center gap-2 xs:pr-20 ${isTablet ? 'mt-10' : ''}`}
+      >
+        <PaginationControl
+          direction='left'
+          onClick={() => handleNavigation('arrow', -1)}
+          disableButton={disableButton.left || disablePagination}
+        />
+        {renderPageItems(
+          totalCount,
+          page,
+          setPage,
+          setPreviousPage,
+          handleNavigation,
+          disablePagination
+        )}
+        <PaginationControl
+          direction='right'
+          onClick={() => handleNavigation('arrow', 1)}
+          disableButton={disableButton.right || disablePagination}
+        />
+      </div>
+    )
   );
 };
 
@@ -108,39 +107,54 @@ const renderPageItems = (
   currentPage,
   setPage,
   setPreviousPage,
-  handleNavigation
+  handleNavigation,
+  disablePagination
 ) => {
-  const pageCount = Math.ceil(totalCount / 18);
+  const pageCount = Math.ceil(totalCount / 6);
+  const maxDisplayedPages = 5; // Maximum number of pages to display before ellipses
+  const startPage = Math.max(
+    currentPage - Math.floor(maxDisplayedPages / 2),
+    1
+  );
+  const endPage = Math.min(startPage + maxDisplayedPages - 1, pageCount);
 
-  return Array.from({ length: pageCount }, (_, index) => {
-    if (index < 3 || index === pageCount - 1) {
-      return (
-        <PageItem
-          key={index}
-          pageNumber={index + 1}
-          isActive={currentPage - 1 === index}
-          onClick={() => {
-            setPage(index + 1);
-            setPreviousPage(index);
-            handleNavigation('buttons', index + 1);
-          }}
-        />
-      );
-    } else if (index === 3) {
-      return <EllipsisItem key={index} />;
-    } else {
-      return null;
-    }
-  });
+  const pages = [];
+
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(
+      <PageItem
+        key={i}
+        pageNumber={i}
+        isActive={currentPage === i}
+        onClick={() => {
+          setPage(i);
+          setPreviousPage(currentPage - 1);
+          handleNavigation('buttons', i);
+        }}
+        disablePagination={disablePagination}
+      />
+    );
+  }
+
+  // Add ellipses if needed
+  if (startPage > 1) {
+    pages.unshift(<EllipsisItem key='start-ellipsis' />);
+  }
+  if (endPage < pageCount) {
+    pages.push(<EllipsisItem key='end-ellipsis' />);
+  }
+
+  return pages;
 };
 
-const PageItem = ({ pageNumber, isActive, onClick }) => (
-  <p
+const PageItem = ({ pageNumber, isActive, onClick, disablePagination }) => (
+  <button
+    disabled={disablePagination}
     onClick={onClick}
-    className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg ${isActive ? 'bg-[#079ea5] text-white' : 'border border-solid border-[#77787c] text-[#77787c]'}`}
+    className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg disabled:opacity-50 ${isActive ? 'bg-[#079ea5] text-white' : 'border border-solid border-[#77787c] text-[#77787c]'}`}
   >
     {pageNumber}
-  </p>
+  </button>
 );
 
 PageItem.propTypes = {
