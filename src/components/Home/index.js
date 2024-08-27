@@ -2,21 +2,25 @@
 import Map from '@/components/Map';
 import { useEffect, useRef, useState } from 'react';
 import { getLatLongOnChange } from '@/services/sanity';
-import { useInView } from 'react-intersection-observer';
 import Pagination from '@/components/Pagination';
-import Loading from '@/components/Loading';
 import ListCard from '@/components/ListingCard/ListCard';
 import Modal from '@/components/Modal';
 import { useRouter } from 'next/navigation';
-import SeeListButton from '@/components//MapButtons/SeeListButton';
 import SeeMapButton from '../MapButtons/SeeMapButton';
-import ShowMore from '../ShowMore';
-import { useWindowWidth } from '../utils/WindowWidth';
+import { useWindowWidth } from '@/utils/WindowWidth';
+import Header from '../Header';
+import MapSkeleton from '../MapSkeleton';
 
 export default function Home() {
   // State for storing fetched data including items and total count
   const [cardData, setCardData] = useState({ items: [], totalCount: 0 });
 
+  const [showLoader, setShowLoader] = useState(false);
+
+  // State to disable pagination when necessary (e.g., on mobile devices)
+  const [disablePagination, setDisablePagination] = useState(false);
+
+  // Get the current window width to determine device type (mobile, tablet, desktop)
   const width = useWindowWidth();
 
   // State to handle loading state for both cards and the map
@@ -34,9 +38,6 @@ export default function Home() {
   // State to store details of the selected item to show in a popup or on marker click
   const [details, setDetails] = useState(null);
 
-  // Ref to check if the component has just mounted for the first time
-  const isFirstRef = useRef(true);
-
   // State for pagination, tracking the current page
   const [page, setPage] = useState(1);
 
@@ -46,86 +47,32 @@ export default function Home() {
   // State to manage the visibility of the modal
   const [showModal, setShowModal] = useState(false);
 
+  const scrollPositionRef = useRef(0);
+
   // Timeout ref for debouncing router pushes to avoid excessive URL updates
   const routerPushTimeoutRef = useRef(null);
 
   // State to ensure the map only renders on the client side
   const [isClient, setIsClient] = useState(false);
 
-  // Intersection observer ref to check if the element is in view
-  const [ref, inView] = useInView();
-
-  const [showMore, setShowMore] = useState(false);
-
-  /**
-   * Function to calculate the range of records based on pagination.
-   * @returns {number} - The calculated index range.
-   */
-  const getRangeOfRecords = () => {
-    if (cardData.totalCount == 0) {
-      return 0;
-    }
-
-    let baseIndex = (page - 1) * 3;
-    if (baseIndex % 3 == 0 && page != previousPage) {
-      return baseIndex;
-    }
-
-    let additionalIndex = 0;
-    if (cardData.items.length >= 12) {
-      additionalIndex = 2;
-    } else if (cardData.items.length >= 6) {
-      additionalIndex = 1;
-    }
-
-    return baseIndex + additionalIndex;
-  };
-
-  // Calculating the range of records for the current page
-  const rangeOfRecord = getRangeOfRecords();
-
-  /**
-   * Function to smoothly scroll to the top of the page when pagination changes.
-   */
-  const scrollToTop = () => {
-    document.getElementById('card')?.scrollIntoView({
-      behavior: 'smooth', // Smooth scrolling effect
-    });
-  };
+  // Determine the device type based on the window width
+  const isMobile = width < 768;
+  const isTablet = width > 767 && width <= 1023;
+  const isDesktop = width >= 1024;
 
   /**
    * Handles the click event on a card, setting the selected item as the current detail and centering the map on the item's location.
    *
    * @param {Object} item - The data object representing the selected item, including its location details.
    */
-  const handleCardClick = (item) => {
+  const highlightLocationOnMap = (item) => {
     // Update the details state with the selected item
-    setDetails(item);
-
-    // If the map reference is available, center the map on the selected item's location and zoom in
-    if (mapRef.current) {
-      const map = mapRef.current;
-      map.setCenter({
-        lat: item?.location?.lat,
-        lng: item?.location?.lng,
-      });
-      map.setZoom(15);
-    }
-  };
-
-  /**
-   * Function to calculate the dynamic height of the card container based on the number of items.
-   * @param {number} dataLength - The number of items in the data array.
-   * @returns {number} - The calculated height of the card container.
-   */
-  const calculateHeight = (dataLength) => {
-    if (!dataLength) return 0;
-    const baseHeight = 400;
-
-    const increments = Math.ceil(dataLength / 3);
-
-    return (
-      (increments > 0 ? baseHeight * increments : baseHeight) - 40 * increments
+    if (isMobile) setShowModal(true);
+    setTimeout(
+      () => {
+        setDetails(item);
+      },
+      isMobile ? 200 : 0
     );
   };
 
@@ -143,87 +90,77 @@ export default function Home() {
     setShowModal(true);
   };
 
+  // Effect to handle data fetching and pagination when the page or device width changes
   useEffect(() => {
-    if (
-      (inView && !isFirstRef.current && cardData.items.length < 18) ||
-      page !== previousPage
-    ) {
-      scrollToTop();
+    if (page > 1 || page !== previousPage || (width && isMobile)) {
+      setDisablePagination(true);
+      if (cardData.items.length && isMobile) {
+        setShowLoader(true);
+        setIsCardLoading(true);
+      }
       // Fetching new data based on map view changes or pagination changes
-      getLatLongOnChange(
-        fetchTimeoutRef,
-        mapRef,
-        details,
-        cardData,
-        setCardData,
-        setIsCardLoading,
-        rangeOfRecord,
-        routerPushTimeoutRef,
-        router
-      );
+      setTimeout(() => {
+        getLatLongOnChange(
+          fetchTimeoutRef,
+          mapRef,
+          cardData,
+          setCardData,
+          setIsCardLoading,
+          page - 1,
+          routerPushTimeoutRef,
+          router,
+          isMobile,
+          setDisablePagination
+        );
+      }, 1000);
+
       setPreviousPage(page);
     }
-
-    isFirstRef.current = false;
-  }, [inView, page]);
-
-  useEffect(() => {
-    if (inView) {
-      setShowMore(false);
-    } else if (cardData.items.length < 18 && !inView) {
-      setShowMore(true);
-    }
-  }, [cardData, inView]);
-
-  // Setting the component to client-side rendering only
+  }, [page, width]);
+  // Effect to ensure the component is only rendered on the client side
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   useEffect(() => {
-    if (width && width < 1024) {
-      setIsCardLoading(false);
-      setShowModal(true);
-    }
-  }, [width]);
-
-  // Calculating the dynamic height based on the data length
-  const height = calculateHeight(cardData?.items.length);
-
-  let cardItemsLength = cardData.items.length;
-  const itemsPerPage = 18;
-
-  if (page > 1) {
-    cardItemsLength += (page - 1) * itemsPerPage;
-  }
-
-  const shouldShowLoading =
-    !isCardLoading &&
-    cardData?.totalCount > cardData?.items?.length &&
-    rangeOfRecord * 6 !== cardData?.totalCount &&
-    cardData.items.length < 13 &&
-    cardItemsLength !== cardData.totalCount;
-
-  const shouldShowPagination =
-    cardData.items.length === 18 ||
-    cardData.items.length == cardData.totalCount ||
-    cardItemsLength === cardData.totalCount;
+    // Scroll back to the saved position
+    window.scrollTo({
+      top: scrollPositionRef.current + 100,
+      behavior: 'smooth',
+    });
+  }, [cardData]);
 
   return (
     <>
-      <div className='container mx-auto grid h-full max-w-screen-2xl grid-cols-12 gap-x-4 p-8'>
-        <div
-          className='col-span-12 h-full overflow-auto sm:col-span-12 md:col-span-12 lg:col-span-8'
-          id='card'
-        >
+      {/* Header component showing the total count of items */}
+      <Header totalCount={cardData.totalCount} />
+
+      {/* Main content area with cards and map */}
+      <div className='flex justify-center p-8 pt-0 md:gap-5 md:p-4 lg:gap-6 xs:p-4'>
+        <div className='md:w-[373px] lg:w-[908px] xs:w-[343px]'>
+          {/* ListCard component displaying the cards */}
           <ListCard
+            isMobile={isMobile}
             isLoading={isCardLoading}
             data={cardData}
-            onCardClick={handleCardClick}
+            highlightLocationOnMap={highlightLocationOnMap}
+            showLoader={showLoader}
           />
-          <Loading viewRef={ref} shouldShowLoading={shouldShowLoading} />
+          {/* Pagination component for tablet devices */}
+          {isTablet && (
+            <Pagination
+              totalCount={cardData?.totalCount}
+              page={page}
+              setPage={setPage}
+              previousPage={previousPage}
+              setPreviousPage={setPreviousPage}
+              disablePagination={disablePagination}
+            />
+          )}
         </div>
-        {isClient && (
+
+        {/* Map component for desktop devices */}
+        {isClient && !isMobile && (
           <Map
             setIsCardLoading={setIsCardLoading}
             setCardData={setCardData}
@@ -236,21 +173,42 @@ export default function Home() {
             showMap={false}
             routerPushTimeoutRef={routerPushTimeoutRef}
             router={router}
+            setDisablePagination={setDisablePagination}
           />
         )}
-        <ShowMore showMore={showMore} shouldShowLoading={shouldShowLoading} />
+        {!isClient && <MapSkeleton />}
+      </div>
 
+      {/* Pagination component for desktop devices */}
+      {isDesktop && (
         <Pagination
-          dataCount={cardData?.items?.length}
           totalCount={cardData?.totalCount}
           page={page}
           setPage={setPage}
           previousPage={previousPage}
           setPreviousPage={setPreviousPage}
-          shouldShowPagination={shouldShowPagination}
+          disablePagination={disablePagination}
         />
-      </div>
-      <SeeMapButton showModal={showModal} openModal={openModal} />
+      )}
+
+      {/* Button to toggle between map and list views */}
+      <SeeMapButton
+        showModal={showModal}
+        openModal={openModal}
+        totalCount={cardData?.totalCount}
+        itemCount={cardData?.items.length}
+        disablePagination={disablePagination}
+        loadMore={() => {
+          setPage(page + 1);
+          scrollPositionRef.current = window.scrollY;
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+        }}
+      />
+
+      {/* Modal component displaying the map when in mobile view */}
       <Modal isVisible={showModal} onClose={closeModal}>
         {isClient && (
           <Map
@@ -265,9 +223,10 @@ export default function Home() {
             showMap={showModal}
             routerPushTimeoutRef={routerPushTimeoutRef}
             router={router}
+            setDisablePagination={setDisablePagination}
+            isMobile={isMobile}
           />
         )}
-        <SeeListButton showModal={showModal} closeModal={closeModal} />
       </Modal>
     </>
   );
