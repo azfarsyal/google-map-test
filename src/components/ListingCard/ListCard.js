@@ -14,9 +14,9 @@ import Loader from '../Loader';
  * @param {object} props.data - The data to display in the cards.
  * @param {Array} props.data.items - The list of items to display in the cards.
  * @param {Function} props.highlightLocationOnMap -  Handles the click event on a card, setting the selected item as the current detail and centering the map on the item's location.
+ * @param {boolean} props.disablePagination - Flag to indicate if the pagination is being disabled.
  */
-const ListCard = ({ isMobile,isLoading, data, highlightLocationOnMap,showLoader }) => {
-
+const ListCard = ({ isMobile,isLoading, data, highlightLocationOnMap,showLoader, disablePagination }) => {
 
   const chunkSize = 3;
   const chunks = [];
@@ -47,7 +47,7 @@ const ListCard = ({ isMobile,isLoading, data, highlightLocationOnMap,showLoader 
       <div
         className={`flex w-full flex-col gap-6 ${data?.items?.length ? 'md:h-[80svh] lg:h-full' : ''} md:gap-2 md:overflow-scroll lg:overflow-auto xs:gap-2`}
       >
-        {isLoading && !data.items?.length
+        {(isLoading && !data.items?.length) || disablePagination
           ? groupedItems.map((group, groupIndex) => (
               <div
                 key={groupIndex}

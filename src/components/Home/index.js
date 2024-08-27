@@ -145,6 +145,7 @@ export default function Home() {
             data={cardData}
             highlightLocationOnMap={highlightLocationOnMap}
             showLoader={showLoader}
+            disablePagination={disablePagination}
           />
           {/* Pagination component for tablet devices */}
           {isTablet && (
