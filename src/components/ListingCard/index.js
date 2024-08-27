@@ -10,11 +10,11 @@ import ArrowRightIcon from '@/assets/icons/ArrowUpRight';
  * @param {object} props - The props of the component.
  * @param {React.ReactNode} props.children - The child elements to be rendered inside the card.
  */
-const ListingCard = ({ children, onClick }) => {
+const ListingCard = ({ children, highlightLocationOnMap }) => {
   return (
     <div
-      className='xs:max-w-full h-max w-full max-w-[281px] space-y-4'
-      onClick={onClick}
+      className={`mb-4 flex h-max w-full flex-col gap-4 md:max-w-full lg:max-w-[281px]`}
+      onClick={highlightLocationOnMap}
     >
       {children}
     </div>
@@ -33,7 +33,9 @@ ListingCard.propTypes = {
  * @param {React.ReactNode} props.children - The child elements to be rendered as the title.
  */
 const CardTitle = ({ children }) => {
-  return <h6 className='line-clamp-2 h-[56px] font-bold'>{children}</h6>;
+  return (
+    <h6 className='line-clamp-2 h-full max-h-[56px] font-bold'>{children}</h6>
+  );
 };
 
 CardTitle.propTypes = {
@@ -66,7 +68,7 @@ const CardImage = ({ src }) => {
   return (
     <img
       src={src}
-      className='xs:max-w-full h-full min-h-[180px] w-full max-w-[280px] rounded-2xl object-center md:h-[200px] lg:h-[180px] xl:h-[229px]'
+      className='h-full w-full max-w-[280px] rounded-2xl object-center md:h-[139px] md:max-w-full lg:h-[180px] xl:h-[229px] xs:h-[167px] xs:max-w-[343px]'
       alt={'Image'}
     />
   );
