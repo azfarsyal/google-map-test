@@ -8,8 +8,8 @@ import Modal from '@/components/Modal';
 import { useRouter } from 'next/navigation';
 import SeeMapButton from '../MapButtons/SeeMapButton';
 import { useWindowWidth } from '@/utils/WindowWidth';
-import Header from '../Header';
 import MapSkeleton from '../MapSkeleton';
+import ResultsCount from '../ListingCard/ResultsCount';
 
 export default function Home() {
   // State for storing fetched data including items and total count
@@ -124,17 +124,15 @@ export default function Home() {
 
   useEffect(() => {
     // Scroll back to the saved position
-    window.scrollTo({
-      top: scrollPositionRef.current + 100,
+    isMobile && window.scrollTo({
+      top: scrollPositionRef.current,
       behavior: 'smooth',
     });
   }, [cardData]);
 
   return (
     <>
-      {/* Header component showing the total count of items */}
-      <Header totalCount={cardData.totalCount} />
-
+      {!!cardData?.totalCount && <ResultsCount totalCount={cardData.totalCount} />}
       {/* Main content area with cards and map */}
       <div className='flex justify-center p-8 pt-0 md:gap-5 md:p-4 lg:gap-6 xs:p-4'>
         <div className='md:w-[373px] lg:w-[908px] xs:w-[343px]'>
@@ -202,10 +200,6 @@ export default function Home() {
         loadMore={() => {
           setPage(page + 1);
           scrollPositionRef.current = window.scrollY;
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-          });
         }}
       />
 

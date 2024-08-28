@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { LiaHandHoldingHeartSolid } from 'react-icons/lia';
@@ -25,7 +26,7 @@ const Header = ({ totalCount }) => {
   };
 
   return (
-    <div className='m-auto flex max-w-[1440px] flex-col items-center px-0 sm:p-4 lg:p-8'>
+    <div className='m-auto flex max-w-[1440px] flex-col items-center px-0 sm:p-4 lg:p-8 md:px-7'>
       <Header.HeroSection />
       <Header.Categories
         categories={categories}
@@ -33,7 +34,6 @@ const Header = ({ totalCount }) => {
         handleCategoryClick={handleCategoryClick}
         iconColor={ICON_COLOR}
       />
-      {totalCount > 0 && <Header.Results totalCount={totalCount} />}
     </div>
   );
 };
@@ -89,7 +89,7 @@ const Categories = ({
   iconColor,
 }) => (
   <div className='mt-4 w-[91.5%] overflow-auto lg:w-full'>
-    <div className='mx-6 flex gap-12 whitespace-nowrap md:ml-0 lg:justify-center'>
+    <div className='mx-6 flex gap-12 whitespace-nowrap md:ml-0 xl:justify-center'>
       {categories.map((category, index) => (
         <div
           className={`flex cursor-pointer flex-col items-center pb-4 ${selectedCategory === category.title ? 'border-b-2 border-b-black' : ''}`}
@@ -117,20 +117,6 @@ const Categories = ({
   </div>
 );
 
-/**
- * Results section for the Header component.
- *
- * @component
- * @param {object} props - The props of the component.
- * @param {number} props.totalCount - The total count of items to display.
- */
-const Results = ({ totalCount }) => (
-  <div className='mt-4 w-full'>
-    <div className='flex items-center font-medium text-[#77787C] md:ml-0'>
-      <div className='ml-4 mr-2 text-sm md:ml-0'>{totalCount} results</div>
-    </div>
-  </div>
-);
 
 Header.propTypes = {
   totalCount: PropTypes.number.isRequired,
@@ -150,6 +136,5 @@ Categories.propTypes = {
 
 Header.HeroSection = HeroSection;
 Header.Categories = Categories;
-Header.Results = Results;
 
 export default Header;

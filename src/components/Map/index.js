@@ -48,8 +48,9 @@ const Map = ({
   router,
   setDisablePagination,
   isMobile,
+  isLoading,
+  setIsLoading,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
 
   const [data, setData] = useState(null);
   /**
