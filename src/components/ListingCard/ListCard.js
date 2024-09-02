@@ -47,11 +47,10 @@ const ListCard = ({
     return <Loader />;
   }
 
-  // Get a random integer to show the dummy matched percentage as we are not using real data to match the searched place.
-  const getRandomInteger = () => {
-    const min = 20
-    const max = 100
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  // Get a random integer to show the dummy percentage FOR matched value, as we are not using real data to match the searched place.
+  const getRandomInteger = (item) => {
+    let percentage = item.title.length + 20
+    return percentage > 100 ? "79" : percentage
   }
 
   return (
@@ -87,7 +86,7 @@ const ListCard = ({
                           highlightLocationOnMap(item)
                         }
                       >
-                        {index % 3 === 0 && <ListingCard.MatchingBadge matchedPercentage={getRandomInteger()} />}
+                        {index % 3 === 0 && <ListingCard.MatchingBadge matchedPercentage={getRandomInteger(item)} />}
                         <ListingCard.Image src={urlFor(item.image).url()} />
                         <div className='flex flex-col gap-3 lg:gap-4 xl:gap-6'>
                           <div className='flex flex-col gap-[2px] xl:gap-2'>
