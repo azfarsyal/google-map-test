@@ -393,8 +393,8 @@ export const getMapMakerIconByMarkerType = (
 ) => {
   const scaledSize =
     isActive || isHovered
-      ? new window.google.maps.Size(30, 30)
-      : new window.google.maps.Size(20, 20);
+      ? new window.google.maps.Size(40, 40)
+      : new window.google.maps.Size(32, 32);
   const icon = MARKER_ICONS[markerType];
   if (icon) {
     return {

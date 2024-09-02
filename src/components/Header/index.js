@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { LiaHandHoldingHeartSolid } from 'react-icons/lia';
+import MatchIcon from '@/assets/icons/Match';
 import { IoIosSearch } from 'react-icons/io';
 import { ICON_COLOR, categories } from '@/utils/category';
 
@@ -63,7 +63,7 @@ const HeroSection = () => (
         </button>
       </div>
       <div className='mt-5 flex items-center space-x-2'>
-        <LiaHandHoldingHeartSolid color={'white'} size={20} />
+        <MatchIcon color="white" width='24' height='24' />
         <div className='text-base font-normal capitalize leading-5 text-white'>
           SORT YOUR MATCHES
         </div>
@@ -102,7 +102,7 @@ const Categories = ({
             })}
           </div>
           <div
-            className={`text-xs ${selectedCategory === category.title ? 'text-black' : ICON_COLOR} font-normal capitalize`}
+            className={`text-xs ${selectedCategory === category.title ? 'text-black' : 'text-[#77787C]'} font-bold leading-[1.1rem] capitalize`}
           >
             {category.title}
           </div>

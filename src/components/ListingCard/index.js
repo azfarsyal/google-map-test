@@ -51,7 +51,7 @@ CardTitle.propTypes = {
  * @param {React.ReactNode} props.children - The child elements to be rendered as the town.
  */
 const CardTown = ({ children }) => {
-  return <p className='text-[#77787c]'>{children}</p>;
+  return <p className='text-[#77787c] font-medium'>{children}</p>;
 };
 
 CardTown.propTypes = {
@@ -87,7 +87,7 @@ CardImage.propTypes = {
 const CardDiscover = () => {
   return (
     <div className='flex items-center gap-2'>
-      <p className='font-bold'>Discover</p>
+      <p className='font-bold text-[14px]'>Discover</p>
       <ArrowRightIcon />
     </div>
   );
@@ -98,12 +98,13 @@ const CardDiscover = () => {
  *
  * @component
  */
-const MatchingBadge = () => {
+const MatchingBadge = ({matchedPercentage}) => {
   return (
-    <div className='absolute right-2 top-2 flex h-[32px] w-[103px] items-center justify-center gap-1 rounded-full bg-[#D3E172] px-2 py-3 shadow-md'>
-      <MatchIcon />
-      <p className='text-[11px] text-[#04341D]'>20% match</p>
-    </div>
+    !!matchedPercentage && 
+      <div className='absolute right-2 top-2 flex h-[32px] w-[103px] items-center justify-center gap-1 rounded-full bg-[#D3E172] px-2 py-3 shadow-md font-medium	'>
+        <MatchIcon />
+        <p className='text-[11px] text-[#04341D]'>{matchedPercentage}% match</p>
+      </div>
   );
 };
 
