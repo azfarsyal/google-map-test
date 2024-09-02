@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ArrowRightIcon from '@/assets/icons/ArrowUpRight';
+import MatchIcon from '@/assets/icons/Match';
 
 /**
  * A card component to display a Card for event listing, with compound components for title, description, and image.
@@ -13,7 +14,7 @@ import ArrowRightIcon from '@/assets/icons/ArrowUpRight';
 const ListingCard = ({ children, highlightLocationOnMap }) => {
   return (
     <div
-      className={`mb-4 flex h-max w-full flex-col gap-4 md:max-w-full lg:max-w-[281px]`}
+      className='sm-mob:h-[272px] max-mob-h-full relative flex h-max w-full flex-col gap-3 md:h-[240px] md:max-h-[240px] md:min-h-[240px] md:max-w-full lg:h-full lg:max-h-[300px] lg:min-h-[280px] lg:max-w-[281px] xl:h-full xl:max-h-[373px] xl:min-h-[344px]'
       onClick={highlightLocationOnMap}
     >
       {children}
@@ -68,7 +69,7 @@ const CardImage = ({ src }) => {
   return (
     <img
       src={src}
-      className='h-full w-full max-w-[280px] rounded-2xl object-center md:h-[139px] md:max-w-full lg:h-[180px] xl:h-[229px] xs:h-[167px] xs:max-w-[343px]'
+      className='sm-mob:h-[167px] max-mob:max-h-[335px] max-mob-h-full h-full w-full max-w-[280px] rounded-2xl object-cover object-center md:h-[139px] md:max-w-full lg:h-[180px] xl:h-[229px] xs:max-w-full'
       alt={'Image'}
     />
   );
@@ -85,9 +86,23 @@ CardImage.propTypes = {
  */
 const CardDiscover = () => {
   return (
-    <div className='flex gap-2'>
+    <div className='flex items-center gap-2'>
       <p className='font-bold'>Discover</p>
       <ArrowRightIcon />
+    </div>
+  );
+};
+
+/**
+ * A sub-component for rendering the matching percentage
+ *
+ * @component
+ */
+const MatchingBadge = () => {
+  return (
+    <div className='absolute right-2 top-2 flex h-[32px] w-[103px] items-center justify-center gap-1 rounded-full bg-[#D3E172] px-2 py-3 shadow-md'>
+      <MatchIcon />
+      <p className='text-[11px] text-[#04341D]'>20% match</p>
     </div>
   );
 };
@@ -97,5 +112,6 @@ ListingCard.Title = CardTitle;
 ListingCard.Town = CardTown;
 ListingCard.Image = CardImage;
 ListingCard.Discover = CardDiscover;
+ListingCard.MatchingBadge = MatchingBadge;
 
 export default ListingCard;

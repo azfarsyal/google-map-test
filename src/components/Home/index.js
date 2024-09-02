@@ -57,7 +57,7 @@ export default function Home() {
 
   // Determine the device type based on the window width
   const isMobile = width < 768;
-  const isTablet = width > 767 && width <= 1023;
+  const isTablet = width > 767 && width < 1024;
   const isDesktop = width >= 1024;
 
   /**
@@ -110,7 +110,8 @@ export default function Home() {
           routerPushTimeoutRef,
           router,
           isMobile,
-          setDisablePagination
+          setDisablePagination,
+          isTablet
         );
       }, 1000);
 
@@ -124,18 +125,25 @@ export default function Home() {
 
   useEffect(() => {
     // Scroll back to the saved position
-    isMobile && window.scrollTo({
-      top: scrollPositionRef.current,
-      behavior: 'smooth',
-    });
+    isMobile &&
+      window.scrollTo({
+        top: scrollPositionRef.current,
+        behavior: 'smooth',
+      });
   }, [cardData]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [cardData.totalCount]);
 
   return (
     <>
-      {!!cardData?.totalCount && <ResultsCount totalCount={cardData.totalCount} />}
+      {!!cardData?.totalCount && (
+        <ResultsCount totalCount={cardData.totalCount} />
+      )}
       {/* Main content area with cards and map */}
-      <div className='flex justify-center p-8 pt-0 md:gap-5 md:p-4 lg:gap-6 xs:p-4'>
-        <div className='md:w-[373px] lg:w-[908px] xs:w-[343px]'>
+      <div className='m-auto flex max-w-[1440px] justify-center md:gap-6 md:p-8 lg:gap-6 lg:py-8 lg:pb-0 lg:pt-4 xs:p-4'>
+        <div className='md:flex md:h-[800px] md:w-[50%] md:flex-col md:justify-between lg:h-[650px] lg:w-[66%] xl:h-[778px] xs:w-full'>
           {/* ListCard component displaying the cards */}
           <ListCard
             isMobile={isMobile}
@@ -144,6 +152,7 @@ export default function Home() {
             highlightLocationOnMap={highlightLocationOnMap}
             showLoader={showLoader}
             disablePagination={disablePagination}
+            isTablet={isTablet}
           />
           {/* Pagination component for tablet devices */}
           {isTablet && (
@@ -154,6 +163,7 @@ export default function Home() {
               previousPage={previousPage}
               setPreviousPage={setPreviousPage}
               disablePagination={disablePagination}
+              isTablet={isTablet}
             />
           )}
         </div>
@@ -173,6 +183,7 @@ export default function Home() {
             routerPushTimeoutRef={routerPushTimeoutRef}
             router={router}
             setDisablePagination={setDisablePagination}
+            isTablet={isTablet}
           />
         )}
         {!isClient && <MapSkeleton />}
@@ -187,6 +198,7 @@ export default function Home() {
           previousPage={previousPage}
           setPreviousPage={setPreviousPage}
           disablePagination={disablePagination}
+          isTablet={isTablet}
         />
       )}
 

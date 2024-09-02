@@ -31,11 +31,11 @@ const SeeMapButton = ({
             See Map
             <CiMap size={20} />
           </button>
-          {totalCount > 6 && itemCount !== totalCount && (
+          {totalCount > 6 && (
             <button
               className='mb-10 mt-5 flex items-center justify-center gap-3 rounded-lg border border-black px-6 py-4 disabled:opacity-50'
               onClick={loadMore}
-              disabled={disablePagination}
+              disabled={disablePagination || itemCount >= totalCount}
             >
               Load more
               <FaArrowDown size={20} />

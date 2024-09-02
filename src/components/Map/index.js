@@ -50,8 +50,8 @@ const Map = ({
   isMobile,
   isLoading,
   setIsLoading,
+  isTablet,
 }) => {
-
   const [data, setData] = useState(null);
   /**
    * State to handle Marker size scaling on hover
@@ -153,7 +153,7 @@ const Map = ({
 
   return (
     <div
-      className={`shadow-[0px 4.75px 12.67px 0px #00000029] w-full overflow-hidden ${isMobile ? 'rounded-t-lg' : 'rounded-[32px]'} border border-solid border-[#E0E0E1] shadow-xl xl:h-[750px] xlg:h-[90svh] xllg:h-[750px] xmlg:h-[750px] xslg:h-[750px] ${!showMap ? 'max-w-[436px] xlg:w-[376px] xllg:max-w-[400px] xmlg:max-w-[370px] xslg:max-w-[350px]' : ''}`}
+      className={`shadow-[0px 4.75px 12.67px 0px #00000029] w-full overflow-hidden xs:h-[90svh] ${isMobile ? 'rounded-t-lg' : 'rounded-[32px]'} border border-solid border-[#E0E0E1] shadow-xl md:h-[800px] lg:h-[620px] xl:h-[750px] ${!showMap ? 'max-w-[436px] md:w-[50%] xllg:max-w-[400px] xmlg:max-w-[370px] xslg:max-w-[350px]' : ''}`}
     >
       <GoogleMapApiLoader apiKey={process.env.NEXT_PUBLIC_GOOGLE_API}>
         <GoogleMap
@@ -171,7 +171,7 @@ const Map = ({
           }}
           containerProps={{
             className:
-              'outline-0 focus:outline-0 ring-0 w-full xlg:h-[90svh] xmlg:h-[750px] xllg:h-[750px] xl:h-[750px] xslg:h-[750px]  border border-grey-500 w-[100vw]',
+              'xs:h-[90svh] outline-0 focus:outline-0 ring-0 w-full md:h-[800px] lg:h-[620px] xl:h-[750px]  border border-grey-500 w-[100vw]',
           }}
           onBoundsChanged={() => {
             getMapPlacesOnLatLongChange(
@@ -183,7 +183,8 @@ const Map = ({
               setIsCardLoading,
               routerPushTimeoutRef,
               router,
-              setDisablePagination
+              setDisablePagination,
+              isTablet
             );
           }}
         >

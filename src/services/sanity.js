@@ -1,5 +1,6 @@
 import { createClient } from 'next-sanity';
 import imageUrlBuilder from '@sanity/image-url';
+import { useWindowWidth } from '@/utils/WindowWidth';
 
 /**
  * The Sanity Project ID.
@@ -38,14 +39,15 @@ export async function getCards() {
  * @param {number} index - The index for which to generate the range.
  * @throws {Error} Throws an error if the index is negative.
  * @returns {string} A string representing the range for pagination.
+ * @returns {boolean} A boolean representing the tablet.
  */
-function getRange(index) {
+function getRange(index, isTablet) {
   if (index < 0) {
     throw new Error('Index must be non-negative.');
   }
-  const start = index * 6;
-  const end = start + 5;
-
+  const startCount = isTablet ? 3 : 6;
+  const start = index * startCount;
+  const end = isTablet ? start + 2 : start + 5;
   return `[${start}..${end}]`;
 }
 
@@ -59,8 +61,16 @@ function getRange(index) {
  * @param {number} index - The pagination index.
  * @returns {Promise<{ items: SanityBoundsData[], totalCount: number }>} A promise that resolves with an object containing the fetched items and total count.
  */
-export async function fetchDataWithinBounds(neLat, neLng, swLat, swLng, index) {
-  const recordsToFetch = getRange(index);
+export async function fetchDataWithinBounds(
+  neLat,
+  neLng,
+  swLat,
+  swLng,
+  index,
+  isTablet
+) {
+  console.log(isTablet);
+  const recordsToFetch = getRange(index, isTablet);
 
   const totalCountQuery = `count(*[_type == "poiOrEvent" && 
     location.lat >= $swLat && location.lat <= $neLat && 
@@ -134,7 +144,8 @@ async function fetchMapData(
   setIsLoading,
   index,
   isMobile,
-  setDisablePagination
+  setDisablePagination,
+  isTablet
 ) {
   setIsLoading(true);
   try {
@@ -143,7 +154,8 @@ async function fetchMapData(
       neLng,
       swLat,
       swLng,
-      index
+      index,
+      isTablet
     );
     //append on mobile
     if (data?.items?.length && isMobile) {
@@ -187,7 +199,8 @@ export async function getLatLongOnChange(
   routerPushTimeoutRef,
   router,
   isMobile,
-  setDisablePagination
+  setDisablePagination,
+  isTablet
 ) {
   let bounds;
 
@@ -206,7 +219,8 @@ export async function getLatLongOnChange(
       index,
       isMobile,
       setDisablePagination,
-      mapRef
+      mapRef,
+      isTablet
     ); // Move the existing bounds processing code to this function
   } else {
     bounds = returnQueryParams();
@@ -217,7 +231,9 @@ export async function getLatLongOnChange(
       setIsLoading,
       index,
       isMobile,
-      setDisablePagination
+      setDisablePagination,
+      null,
+      isTablet
     ); // Move the existing bounds processing code to this function
   }
 
@@ -229,7 +245,8 @@ export async function getLatLongOnChange(
     index,
     isMobile,
     setDisablePagination,
-    mapRef
+    mapRef,
+    isTablet
   ) {
     if (bounds) {
       const ne = bounds.getNorthEast(); // North-East corner
@@ -245,7 +262,8 @@ export async function getLatLongOnChange(
           setIsLoading,
           index,
           isMobile,
-          setDisablePagination
+          setDisablePagination,
+          isTablet
         );
       }, 1000);
 
@@ -289,7 +307,8 @@ export async function getMapPlacesOnLatLongChange(
   setIsCardLoading,
   routerPushTimeoutRef,
   router,
-  setDisablePagination
+  setDisablePagination,
+  isTablet
 ) {
   /**
    * clear the debounce timeout
@@ -316,7 +335,14 @@ export async function getMapPlacesOnLatLongChange(
         .finally(() => {
           setIsLoading(false);
         });
-      await fetchDataWithinBounds(ne.lat(), ne.lng(), sw.lat(), sw.lng(), 0)
+      await fetchDataWithinBounds(
+        ne.lat(),
+        ne.lng(),
+        sw.lat(),
+        sw.lng(),
+        0,
+        isTablet
+      )
         .then((res) => {
           setCardData(res);
           setDisablePagination(false);

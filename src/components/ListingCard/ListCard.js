@@ -16,8 +16,15 @@ import Loader from '../Loader';
  * @param {Function} props.highlightLocationOnMap -  Handles the click event on a card, setting the selected item as the current detail and centering the map on the item's location.
  * @param {boolean} props.disablePagination - Flag to indicate if the pagination is being disabled.
  */
-const ListCard = ({ isMobile,isLoading, data, highlightLocationOnMap,showLoader, disablePagination }) => {
-
+const ListCard = ({
+  isMobile,
+  isLoading,
+  data,
+  highlightLocationOnMap,
+  showLoader,
+  disablePagination,
+  isTablet,
+}) => {
   const chunkSize = 3;
   const chunks = [];
 
@@ -25,7 +32,7 @@ const ListCard = ({ isMobile,isLoading, data, highlightLocationOnMap,showLoader,
     chunks.push(data.items.slice(i, i + chunkSize));
   }
 
-  const items = Array.from({ length: isMobile ? 2 : 6 });
+  const items = Array.from({ length: isTablet ? 3 : isMobile ? 2 : 6 });
 
   const groupedItems = items.reduce((acc, item, index) => {
     const groupIndex = Math.floor(index / 3);
@@ -36,26 +43,24 @@ const ListCard = ({ isMobile,isLoading, data, highlightLocationOnMap,showLoader,
     return acc;
   }, []);
 
-  if(showLoader && isLoading){
-    return (
-     <Loader/>
-    )
+  if (showLoader && isLoading) {
+    return <Loader />;
   }
 
   return (
     <>
       <div
-        className={`flex w-full flex-col gap-6 ${data?.items?.length ? 'md:h-[80svh] lg:h-full' : ''} md:gap-2 md:overflow-scroll lg:overflow-auto xs:gap-2`}
+        className={`flex w-full flex-col lg:gap-8 ${data?.items?.length ? 'lg:h-full' : ''} md:gap-2 md:overflow-scroll lg:overflow-auto xs:gap-2`}
       >
         {(isLoading && !data.items?.length) || disablePagination
           ? groupedItems.map((group, groupIndex) => (
               <div
                 key={groupIndex}
-                className='xs: flex gap-2 md:flex-col md:gap-2 lg:flex-row lg:gap-6 xs:flex-col'
+                className='flex md:flex-col md:gap-5 lg:flex-row lg:gap-6 xs:flex-col xs:gap-4'
               >
                 {group.map((_, itemIndex) => (
                   <div
-                    className='h-60 w-full rounded-3xl bg-gray-200 md:max-w-full lg:max-w-[281px]'
+                    className='flex h-max w-full flex-col gap-3 rounded-3xl bg-gray-200 md:h-[240px] md:max-w-full lg:max-w-[281px] xs:h-[272px]'
                     key={itemIndex}
                   />
                 ))}
@@ -65,7 +70,7 @@ const ListCard = ({ isMobile,isLoading, data, highlightLocationOnMap,showLoader,
               return (
                 <div
                   key={chunkIndex}
-                  className='flex md:flex-col md:gap-2 lg:flex-row lg:gap-6 xs:flex-col'
+                  className='flex md:flex-col md:gap-5 lg:flex-row lg:gap-6 xs:flex-col xs:gap-4'
                 >
                   {chunk.map((item, index) => {
                     return (
@@ -75,9 +80,10 @@ const ListCard = ({ isMobile,isLoading, data, highlightLocationOnMap,showLoader,
                           highlightLocationOnMap(item)
                         }
                       >
+                        {index % 3 === 0 && <ListingCard.MatchingBadge />}
                         <ListingCard.Image src={urlFor(item.image).url()} />
-                        <div className='flex flex-col gap-4'>
-                          <div className='flex flex-col gap-1'>
+                        <div className='flex flex-col gap-3 lg:gap-4 xl:gap-6'>
+                          <div className='flex flex-col gap-[2px] xl:gap-2'>
                             <ListingCard.Title>{item.title}</ListingCard.Title>
                             <ListingCard.Town>{item.town}</ListingCard.Town>
                           </div>

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ChevronLeftIcon from '@/assets/icons/ArrowHeadLeft';
 import ChevronRightIcon from '@/assets/icons/ArrowHeadRight';
-import { useWindowWidth } from '@/utils/WindowWidth';
 
 /**
  * Pagination component for navigating through pages.
@@ -23,9 +22,9 @@ const Pagination = ({
   previousPage,
   setPreviousPage,
   disablePagination,
+  isTablet,
 }) => {
-  const width = useWindowWidth();
-  const isTablet = width <= 1023;
+  const cards = isTablet ? 3 : 6;
   // State to manage the disabled state of navigation buttons based on the current page
   // `left` is disabled if on the first page, `right` is disabled if on the last page
   const [disableButton, setDisableButton] = useState({
@@ -59,10 +58,8 @@ const Pagination = ({
   };
 
   return (
-    totalCount > 6 && (
-      <div
-        className={`mb-2 flex justify-center gap-2 xs:pr-20 ${isTablet ? 'mt-10' : ''}`}
-      >
+    totalCount > cards && (
+      <div className='flex justify-center gap-2 xl:mb-10 xl:mt-5 xs:pr-20'>
         <PaginationControl
           direction='left'
           onClick={() => handleNavigation('arrow', -1)}
@@ -74,7 +71,8 @@ const Pagination = ({
           setPage,
           setPreviousPage,
           handleNavigation,
-          disablePagination
+          disablePagination,
+          cards
         )}
         <PaginationControl
           direction='right'
@@ -108,40 +106,104 @@ const renderPageItems = (
   setPage,
   setPreviousPage,
   handleNavigation,
-  disablePagination
+  disablePagination,
+  cards
 ) => {
-  const pageCount = Math.ceil(totalCount / 6);
-  const maxDisplayedPages = 5; // Maximum number of pages to display before ellipses
-  const startPage = Math.max(
-    currentPage - Math.floor(maxDisplayedPages / 2),
-    1
-  );
-  const endPage = Math.min(startPage + maxDisplayedPages - 1, pageCount);
-
+  const pageCount = Math.ceil(totalCount / cards);
   const pages = [];
 
-  for (let i = startPage; i <= endPage; i++) {
+  // Always display the first page
+  pages.push(
+    <PageItem
+      key={1}
+      pageNumber={1}
+      isActive={currentPage === 1}
+      onClick={() => {
+        setPage(1);
+        setPreviousPage(currentPage - 1);
+        handleNavigation('buttons', 1);
+      }}
+      disablePagination={disablePagination}
+    />
+  );
+
+  if (currentPage <= 4 || pageCount <= 6) {
+    // Show pages 2 to 5
+    for (let i = 2; i <= Math.min(5, pageCount - 1); i++) {
+      pages.push(
+        <PageItem
+          key={i}
+          pageNumber={i}
+          isActive={currentPage === i}
+          onClick={() => {
+            setPage(i);
+            setPreviousPage(currentPage - 1);
+            handleNavigation('buttons', i);
+          }}
+          disablePagination={disablePagination}
+        />
+      );
+    }
+    if (pageCount > 6) {
+      pages.push(<EllipsisItem key='end-ellipsis' />);
+    }
+  } else if (currentPage >= pageCount - 3) {
+    // Show ellipsis and pages before the last few pages
+    pages.push(<EllipsisItem key='start-ellipsis' />);
+    for (let i = pageCount - 4; i < pageCount; i++) {
+      pages.push(
+        <PageItem
+          key={i}
+          pageNumber={i}
+          isActive={currentPage === i}
+          onClick={() => {
+            setPage(i);
+            setPreviousPage(currentPage - 1);
+            handleNavigation('buttons', i);
+          }}
+          disablePagination={disablePagination}
+        />
+      );
+    }
+  } else {
+    // Show ellipses, current page, and its adjacent pages
+    pages.push(<EllipsisItem key='start-ellipsis' />);
+    for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+      if (i > 1 && i < pageCount) {
+        // Avoid adding ellipsis or out-of-bound pages
+        pages.push(
+          <PageItem
+            key={i}
+            pageNumber={i}
+            isActive={currentPage === i}
+            onClick={() => {
+              setPage(i);
+              setPreviousPage(currentPage - 1);
+              handleNavigation('buttons', i);
+            }}
+            disablePagination={disablePagination}
+          />
+        );
+      }
+    }
+    pages.push(<EllipsisItem key='end-ellipsis' />);
+  }
+
+  // Always display the last page if more than one page exists
+  if (pageCount > 1) {
     pages.push(
       <PageItem
-        key={i}
-        pageNumber={i}
-        isActive={currentPage === i}
+        key={pageCount}
+        pageNumber={pageCount}
+        isActive={currentPage === pageCount}
         onClick={() => {
-          setPage(i);
+          setPage(pageCount);
           setPreviousPage(currentPage - 1);
-          handleNavigation('buttons', i);
+          handleNavigation('buttons', pageCount);
         }}
         disablePagination={disablePagination}
       />
     );
-  }
-
-  // Add ellipses if needed
-  if (startPage > 1) {
-    pages.unshift(<EllipsisItem key='start-ellipsis' />);
-  }
-  if (endPage < pageCount) {
-    pages.push(<EllipsisItem key='end-ellipsis' />);
   }
 
   return pages;

@@ -5,6 +5,7 @@ import './globals.css';
 import Header from '@/components/Header';
 
 const inter = Inter({ subsets: ['latin'] });
+const myFont = localFont({ src: '../assets/fonts/Headlines-Bold.otf' });
 
 export const metadata = {
   title: 'Google Map Test',
@@ -16,7 +17,8 @@ export default function RootLayout({ children }) {
     <html lang='en'>
       <body className={inter.className}>
         <Header />
-        {children}</body>
+        {children}
+      </body>
     </html>
   );
 }

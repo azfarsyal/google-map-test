@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { LiaHandHoldingHeartSolid } from 'react-icons/lia';
@@ -26,7 +26,7 @@ const Header = ({ totalCount }) => {
   };
 
   return (
-    <div className='m-auto flex max-w-[1440px] flex-col items-center px-0 sm:p-4 lg:p-8 md:px-7'>
+    <div className='m-auto flex max-w-[1440px] flex-col items-center px-0 md:px-7 lg:p-8'>
       <Header.HeroSection />
       <Header.Categories
         categories={categories}
@@ -44,14 +44,14 @@ const Header = ({ totalCount }) => {
  * @component
  */
 const HeroSection = () => (
-  <div className='relative m-3 h-[289px] w-full rounded-[36px] sm:h-[250px] lg:h-[303px]'>
-    <div className="absolute inset-0 rounded-[36px] bg-[url('/lake.jpg')] bg-cover bg-center"></div>
-    <div className='absolute inset-0 rounded-[36px] bg-black opacity-30'></div>
-    <div className='relative flex h-full flex-col items-center justify-center sm:mt-6'>
-      <p className='mb-4 text-center text-[32px] font-bold text-white sm:text-4xl md:text-5xl lg:text-[70px]'>
-        Personalize Your Experience
+  <div className='relative m-3 h-[289px] w-full rounded-[36px] md:h-[250px] lg:h-[303px] xs:h-[289px] xs:rounded-[15px]'>
+    <div className="absolute inset-0 rounded-[36px] bg-[url('/lake.jpg')] bg-cover bg-center xs:rounded-[15px]"></div>
+    <div className='absolute inset-0 rounded-[36px] bg-black opacity-30 xs:rounded-[15px]'></div>
+    <div className='relative flex h-full flex-col items-center justify-center md:mt-6 xs:mt-3'>
+      <p className='min-mob:w-[295px] min-tab:text-[59px] mb-4 text-center text-[32px] font-bold text-white md:text-5xl lg:text-[69px] xs:text-4xl'>
+        Personalize your experience
       </p>
-      <div className='flex gap-4 rounded-full border border-[#BDBDBD]/40 bg-[#A3A3A3]/30 py-5 font-normal text-white backdrop-blur-md md:px-11 md:py-3'>
+      <div className='flex gap-4 rounded-full border border-[#BDBDBD]/40 bg-[#A3A3A3]/30 py-5 font-normal text-white backdrop-blur-md md:px-11 md:py-3 xs:gap-[0.80rem]'>
         <button disabled className='w-24 border-r-2 border-[#FFFFFF]/20 px-5'>
           When
         </button>
@@ -65,7 +65,7 @@ const HeroSection = () => (
       <div className='mt-5 flex items-center space-x-2'>
         <LiaHandHoldingHeartSolid color={'white'} size={20} />
         <div className='text-base font-normal capitalize leading-5 text-white'>
-          Sort your matches
+          SORT YOUR MATCHES
         </div>
       </div>
     </div>
@@ -116,7 +116,6 @@ const Categories = ({
     </div>
   </div>
 );
-
 
 Header.propTypes = {
   totalCount: PropTypes.number.isRequired,
