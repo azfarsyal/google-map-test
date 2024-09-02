@@ -6,7 +6,7 @@ import Pagination from '@/components/Pagination';
 import ListCard from '@/components/ListingCard/ListCard';
 import Modal from '@/components/Modal';
 import { useRouter } from 'next/navigation';
-import SeeMapButton from '../MapButtons/SeeMapButton';
+import MapButtons from '../MapButtons';
 import { useWindowWidth } from '@/utils/WindowWidth';
 import MapSkeleton from '../MapSkeleton';
 import ResultsCount from '../ListingCard/ResultsCount';
@@ -203,7 +203,7 @@ export default function Home() {
       )}
 
       {/* Button to toggle between map and list views */}
-      <SeeMapButton
+      <MapButtons
         showModal={showModal}
         openModal={openModal}
         totalCount={cardData?.totalCount}

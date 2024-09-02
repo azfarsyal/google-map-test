@@ -3,16 +3,16 @@ import { CiMap } from 'react-icons/ci';
 import { FaArrowDown } from 'react-icons/fa6';
 
 /**
- * SeeMapButton component that displays a button to open a modal with the map.
+ * MapButtons component that displays a button to open a modal with the map.
  * The button is fixed to the bottom of the screen and is only visible on smaller screens (hidden on large screens).
  *
- * @param {Object} props - The properties passed to the SeeMapButton component.
+ * @param {Object} props - The properties passed to the MapButtons component.
  * @param {boolean} props.showModal - The state indicating whether the modal is currently visible.
  * @param {Function} props.openModal - The function to open the modal when the button is clicked.
- * @returns {JSX.Element} The rendered SeeMapButton component.
+ * @returns {JSX.Element} The rendered MapButtons component.
  */
 
-const SeeMapButton = ({
+const MapButtons = ({
   showModal,
   openModal,
   totalCount,
@@ -25,7 +25,7 @@ const SeeMapButton = ({
       {!showModal && (
         <div className='flex gap-[10px]'>
           <button
-            className='mb-10 mt-5 flex items-center justify-center gap-3 rounded-lg border border-black bg-black px-6 py-4 text-white'
+            className='mb-10 mt-5 flex items-center justify-center gap-3 rounded-lg border border-black bg-black px-[1rem] py-[0.5rem] text-white h-[3rem] text-base font-bold'
             onClick={openModal}
           >
             See Map
@@ -33,7 +33,7 @@ const SeeMapButton = ({
           </button>
           {totalCount > 6 && (
             <button
-              className='mb-10 mt-5 flex items-center justify-center gap-3 rounded-lg border border-black px-6 py-4 disabled:opacity-50'
+              className='mb-10 mt-5 flex items-center justify-center gap-3 rounded-lg border border-black disabled:border-gray px-[1rem] py-[0.5rem] disabled:opacity-25 h-[3rem] text-base font-bold'
               onClick={loadMore}
               disabled={disablePagination || itemCount >= totalCount}
             >
@@ -47,9 +47,9 @@ const SeeMapButton = ({
   );
 };
 
-SeeMapButton.propTypes = {
+MapButtons.propTypes = {
   showModal: PropTypes.bool.isRequired,
   openModal: PropTypes.func.isRequired,
 };
 
-export default SeeMapButton;
+export default MapButtons;
