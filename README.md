@@ -35,7 +35,39 @@ NEXT_PUBLIC_GOOGLE_API={Google Map API Key}
 
 APP is deployed at [https://google-map-test-lake.vercel.app](https://google-map-test-lake.vercel.app)
 
+Some screenshots of the responsive web app is as follows:
+
+1. Mobile Screens:
+
+![Mobile Screen 1](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.14.35-4ielKZ6ZISEheCWffSsasKYv8FUdJp.png)
+
+![Mobile Screen 2](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.15.24-QLIx5NYilluXaNt8MlZHp15vqYd24M.png)
+
+![Mobile Screen 3](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.15.31-Myp9UbnUXAoRp61Q4cdTwb34o5DfhQ.png)
+
+![Mobile Screen 4](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.15.46-fRqnORfglA1Y7z9Ab06XPyS2QUCLm4.png)
+
+2. Desktop Screens:
+
+![Desktop Screen 1](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.16.46%E2%80%AFPM-NurnVxkdxnUKKrhVzRIWwSbBPIIbjw.png)
+
+![Desktop Screen 2](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.17.22%E2%80%AFPM-cDSnjZ3QKkeLXdCvOm30TQZPtqN8Xq.png)
+
+![Desktop Screen 3](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.17.31%E2%80%AFPM-OMWhbWvfANqZZ4EDX6rYkduFD19LGG.png)
+
+![Desktop Screen 4](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.17.52%E2%80%AFPM-3mXtkpM6FiMEkr0qiCGx8JzBu01ojv.png)
+
+3. Tablet Screens:
+
+![Tablet Screen 1](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Tablet/Simulator%20Screenshot%20-%20iPad%20(10th%20generation)%20-%202025-01-17%20at%2018.10.05-3uvKXQHQpCpQAcrGJ045TGoPevdv6O.png)
+
+![Tablet Screen 2](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Tablet/Simulator%20Screenshot%20-%20iPad%20(10th%20generation)%20-%202025-01-17%20at%2018.11.14-IAClKtnFtrzfjKw0HPPM61sc4vxRrT.png)
+
+![Tablet Screen 3](https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Tablet/Simulator%20Screenshot%20-%20iPad%20(10th%20generation)%20-%202025-01-17%20at%2018.11.45-xSZ4omog9TXZsxHP818G0nR1f9IAZo.png)
+
 # How to modify sanity data?
+
+[ACCESS RESTRICTED] Could be provided upon request.
 
 To update or add new POIs in Sanity:
 
