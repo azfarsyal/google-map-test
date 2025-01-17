@@ -35,7 +35,7 @@ NEXT_PUBLIC_GOOGLE_API={Google Map API Key}
 
 # How to test?
 
-APP is deployed at [https://google-map-test-lake.vercel.app](https://google-map-test-lake.vercel.app)
+APP is deployed at [https://google-map-test-lake.vercel.app](https://google-map-test-lake.vercel.app/?centerLat=31.464656329970605&centerLng=73.2539386&neLat=31.574114902764265&neLng=73.32809631484375&swLat=31.355069641403432&swLng=73.17978088515625&zoom=12)
 
 Some screenshots of the responsive web app is as follows:
 
