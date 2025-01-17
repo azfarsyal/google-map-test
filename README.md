@@ -43,48 +43,70 @@ Some screenshots of the responsive web app is as follows:
 
 ## 1. Desktop Screens (4):
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.16.46%E2%80%AFPM-NurnVxkdxnUKKrhVzRIWwSbBPIIbjw.png" alt="Desktop Screen 1" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.16.46%E2%80%AFPM-NurnVxkdxnUKKrhVzRIWwSbBPIIbjw.png" alt="Desktop Screen 1" style="border: 3px solid lightblue; border-radius: 20px;" />
+</div>
 
 ---
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.17.22%E2%80%AFPM-cDSnjZ3QKkeLXdCvOm30TQZPtqN8Xq.png" alt="Desktop Screen 2" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.17.22%E2%80%AFPM-cDSnjZ3QKkeLXdCvOm30TQZPtqN8Xq.png" alt="Desktop Screen 2" style="border: 3px solid lightblue; border-radius: 20px;" />
+</div>
 
 ---
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.17.31%E2%80%AFPM-OMWhbWvfANqZZ4EDX6rYkduFD19LGG.png" alt="Desktop Screen 3" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.17.31%E2%80%AFPM-OMWhbWvfANqZZ4EDX6rYkduFD19LGG.png" alt="Desktop Screen 3" style="border: 3px solid lightblue; border-radius: 20px;" />
+</div>
 
 ---
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.17.52%E2%80%AFPM-3mXtkpM6FiMEkr0qiCGx8JzBu01ojv.png" alt="Desktop Screen 4" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Desktop/Screenshot%202025-01-17%20at%206.17.52%E2%80%AFPM-3mXtkpM6FiMEkr0qiCGx8JzBu01ojv.png" alt="Desktop Screen 4" style="border: 3px solid lightblue; border-radius: 20px;" />
+</div>
 
 
 ## 2. Tablet Screens (3):
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Tablet/Simulator%20Screenshot%20-%20iPad%20(10th%20generation)%20-%202025-01-17%20at%2018.10.05-3uvKXQHQpCpQAcrGJ045TGoPevdv6O.png" alt="Tablet Screen 1" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Tablet/Simulator%20Screenshot%20-%20iPad%20(10th%20generation)%20-%202025-01-17%20at%2018.10.05-3uvKXQHQpCpQAcrGJ045TGoPevdv6O.png" alt="Tablet Screen 1" style="border: 3px solid lightblue; border-radius: 20px;" />
+</div>
 
 ---
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Tablet/Simulator%20Screenshot%20-%20iPad%20(10th%20generation)%20-%202025-01-17%20at%2018.11.14-IAClKtnFtrzfjKw0HPPM61sc4vxRrT.png" alt="Tablet Screen 2" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Tablet/Simulator%20Screenshot%20-%20iPad%20(10th%20generation)%20-%202025-01-17%20at%2018.11.14-IAClKtnFtrzfjKw0HPPM61sc4vxRrT.png" alt="Tablet Screen 2" style="border: 3px solid lightblue; border-radius: 20px;" />
+</div>
 
 ---
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Tablet/Simulator%20Screenshot%20-%20iPad%20(10th%20generation)%20-%202025-01-17%20at%2018.11.45-xSZ4omog9TXZsxHP818G0nR1f9IAZo.png" alt="Tablet Screen 3" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Tablet/Simulator%20Screenshot%20-%20iPad%20(10th%20generation)%20-%202025-01-17%20at%2018.11.45-xSZ4omog9TXZsxHP818G0nR1f9IAZo.png" alt="Tablet Screen 3" style="border: 3px solid lightblue; border-radius: 20px;" />
+</div>
 
 ## 3. Mobile Screens (4):
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.14.35-4ielKZ6ZISEheCWffSsasKYv8FUdJp.png" alt="Mobile Screen 1" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.14.35-4ielKZ6ZISEheCWffSsasKYv8FUdJp.png" alt="Mobile Screen 1" style="border: 3px solid lightblue; border-radius: 20px" />
+</div>
 
 ---
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.15.24-QLIx5NYilluXaNt8MlZHp15vqYd24M.png" alt="Mobile Screen 2" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.15.24-QLIx5NYilluXaNt8MlZHp15vqYd24M.png" alt="Mobile Screen 2" style="border: 3px solid lightblue; border-radius: 20px" />
+</div>
 
 ---
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.15.31-Myp9UbnUXAoRp61Q4cdTwb34o5DfhQ.png" alt="Mobile Screen 3" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.15.31-Myp9UbnUXAoRp61Q4cdTwb34o5DfhQ.png" alt="Mobile Screen 3" style="border: 3px solid lightblue; border-radius: 20px" />
+</div>
 
 ---
 
-<img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.15.46-fRqnORfglA1Y7z9Ab06XPyS2QUCLm4.png" alt="Mobile Screen 4" style="border: 3px solid lightblue; border-radius: 20px;" />
+<div style="border: 4px solid gray; border-radius: 5px; display: inline-block; padding: 20px; background-color: black;">
+  <img src="https://vfbl5ixuvaltcym1.public.blob.vercel-storage.com/ReadmeImages/Mobile/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202025-01-17%20at%2018.15.46-fRqnORfglA1Y7z9Ab06XPyS2QUCLm4.png" alt="Mobile Screen 4" style="border: 3px solid lightblue; border-radius: 20px" />
+</div>
 
 # How to modify sanity data?
 
