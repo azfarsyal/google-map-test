@@ -1,4 +1,6 @@
-This project demonstrates the customization of Google Maps and integration with Sanity for data management within the Responsive Web App.
+This project is intended solely for testing and demonstration purposes.
+
+It showcases the customization of Google Maps and seamless integration with Sanity for efficient data management within a responsive web application.
 
 # Getting Started Locally
 
