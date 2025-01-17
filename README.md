@@ -37,6 +37,8 @@ NEXT_PUBLIC_GOOGLE_API={Google Map API Key}
 
 APP is deployed at [https://google-map-test-lake.vercel.app](https://google-map-test-lake.vercel.app/?centerLat=31.464656329970605&centerLng=73.2539386&neLat=31.574114902764265&neLng=73.32809631484375&swLat=31.355069641403432&swLng=73.17978088515625&zoom=12)
 
+NOTE: The root URL will open the map as per users location, which might not have any data associated in Sanity hence no data will be loaded, click the aforementioned link which will redirect to specific coordinates i.e. within Pakistan for which data is available.
+
 Some screenshots of the responsive web app is as follows:
 
 1. Mobile Screens:
